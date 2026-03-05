@@ -17,8 +17,7 @@ A macOS app for iOS developers that lets you simulate GPS locations on iOS Simul
 | **Geofence visualization** | Draw circle overlays on the map to visualize geofence regions you're testing |
 | **Coordinate format options** | Toggle between decimal degrees and DMS (degrees/minutes/seconds) |
 | **Simulator picker** | Detect and select from all booted iOS Simulators |
-
-## Planned
-
-- **Multi-simulator broadcast** — Send the same location to all booted simulators simultaneously
-- **Android emulator support** — Simulate locations on Android emulators via `adb emu geo fix`, with automatic emulator detection
+| **Multi-simulator broadcast** | Send the same location to all booted simulators simultaneously |
+| **Android emulator support** | Simulate locations on Android emulators via `adb emu geo fix`, with automatic emulator detection |
+| **Scenario mode** | Pre-built test scenarios (City Run, City Bicycle Ride, Freeway Drive) with realistic movement |
+| **Speed presets** | Walk, Run, Bicycle, Drive, Highway, or custom speed for route simulation |
