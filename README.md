@@ -21,3 +21,23 @@ A macOS app for iOS developers that lets you simulate GPS locations on iOS Simul
 | **Android emulator support** | Simulate locations on Android emulators via `adb emu geo fix`, with automatic emulator detection |
 | **Scenario mode** | Pre-built test scenarios (City Run, City Bicycle Ride, Freeway Drive) with realistic movement |
 | **Speed presets** | Walk, Run, Bicycle, Drive, Highway, or custom speed for route simulation |
+
+## Future Improvements
+
+### High Impact
+
+- **Input validation** — Add bounds checking for coordinates (lat -90–90, lon -180–180), custom speed, and route interval fields
+- **Unit tests** — Add test coverage for coordinate parsing, GPX import, and service layers
+- **Map annotation diffing** — Diff and update only changed annotations instead of removing and re-adding all on every update
+- **Undo/redo** — Support undo/redo for waypoint additions, deletions, and geofence changes
+
+### Medium Impact
+
+- **Recent locations history** — Track recently used locations for quick access
+- **Route ETA display** — Show estimated arrival time based on distance and selected speed
+- **Altitude/elevation support** — Support 3D coordinates for apps that need altitude testing
+- **Location accuracy simulation** — Simulate GPS accuracy radius for testing location-sensitive apps
+- **Custom scenarios** — Allow users to create and save custom scenarios beyond the hardcoded Apple ones
+- **Preset management** — Add rename, drag-to-reorder, and folder/category support for presets
+- **Confirmation dialogs** — Add confirmation prompts when deleting presets or geofences
+- **Route speed profiles** — Vary speed along a route (e.g., slow at turns, fast on straightaways)
