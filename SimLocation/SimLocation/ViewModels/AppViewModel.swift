@@ -99,6 +99,11 @@ final class AppViewModel {
     var pendingGeofenceLongitude: String = ""
     var editingGeofenceID: UUID?
 
+    // Waypoint editing
+    var editingWaypointID: UUID?
+    var pendingWaypointLatitude: String = ""
+    var pendingWaypointLongitude: String = ""
+
     // Coordinate format
     var coordinateFormat: CoordinateFormat = CoordinateFormat(
         rawValue: UserDefaults.standard.string(forKey: "coordinateFormat") ?? "dd"
@@ -254,6 +259,14 @@ final class AppViewModel {
         if let lon = CoordinateFormat.parse(pendingGeofenceLongitude, isLatitude: false) {
             pendingGeofenceLongitude = CoordinateFormat.formatSingle(lon, isLatitude: false, as: newFormat)
         }
+
+        // Convert waypoint pending fields
+        if let lat = CoordinateFormat.parse(pendingWaypointLatitude, isLatitude: true) {
+            pendingWaypointLatitude = CoordinateFormat.formatSingle(lat, isLatitude: true, as: newFormat)
+        }
+        if let lon = CoordinateFormat.parse(pendingWaypointLongitude, isLatitude: false) {
+            pendingWaypointLongitude = CoordinateFormat.formatSingle(lon, isLatitude: false, as: newFormat)
+        }
     }
 
     // MARK: - Simulator Management
@@ -310,6 +323,12 @@ final class AppViewModel {
             return
         }
 
+        if editingWaypointID != nil {
+            pendingWaypointLatitude = formatForInput(coordinate.latitude, isLatitude: true)
+            pendingWaypointLongitude = formatForInput(coordinate.longitude, isLatitude: false)
+            return
+        }
+
         switch mode {
         case .single:
             singleLatitude = formatForInput(coordinate.latitude, isLatitude: true)
@@ -339,7 +358,34 @@ final class AppViewModel {
         }
     }
 
+    func startEditingWaypoint(_ waypoint: Waypoint) {
+        editingWaypointID = waypoint.id
+        pendingWaypointLatitude = formatForInput(waypoint.latitude, isLatitude: true)
+        pendingWaypointLongitude = formatForInput(waypoint.longitude, isLatitude: false)
+    }
+
+    func saveEditingWaypoint() {
+        guard let id = editingWaypointID,
+              let lat = parseCoordinate(pendingWaypointLatitude, isLatitude: true),
+              let lng = parseCoordinate(pendingWaypointLongitude, isLatitude: false) else {
+            return
+        }
+        updateWaypointCoordinate(id: id, latitude: lat, longitude: lng)
+        editingWaypointID = nil
+        pendingWaypointLatitude = ""
+        pendingWaypointLongitude = ""
+    }
+
+    func cancelEditingWaypoint() {
+        editingWaypointID = nil
+        pendingWaypointLatitude = ""
+        pendingWaypointLongitude = ""
+    }
+
     func removeWaypoint(_ waypoint: Waypoint) {
+        if editingWaypointID == waypoint.id {
+            editingWaypointID = nil
+        }
         guard let index = waypoints.firstIndex(where: { $0.id == waypoint.id }) else { return }
         let removed = waypoints.remove(at: index)
         invalidateRoadRoute()

@@ -19,9 +19,18 @@ struct RoutePanel: View {
             } else {
                 List {
                     ForEach(Array(viewModel.waypoints.enumerated()), id: \.element.id) { index, wp in
-                        WaypointRow(index: index + 1, waypoint: wp, coordinateFormat: viewModel.coordinateFormat) {
-                            viewModel.removeWaypoint(wp)
-                        }
+                        WaypointRow(
+                            index: index + 1,
+                            waypoint: wp,
+                            coordinateFormat: viewModel.coordinateFormat,
+                            isEditing: viewModel.editingWaypointID == wp.id,
+                            pendingLatitude: $viewModel.pendingWaypointLatitude,
+                            pendingLongitude: $viewModel.pendingWaypointLongitude,
+                            onEdit: { viewModel.startEditingWaypoint(wp) },
+                            onSave: { viewModel.saveEditingWaypoint() },
+                            onCancel: { viewModel.cancelEditingWaypoint() },
+                            onDelete: { viewModel.removeWaypoint(wp) }
+                        )
                     }
                     .onMove { source, destination in
                         viewModel.moveWaypoints(from: source, to: destination)
