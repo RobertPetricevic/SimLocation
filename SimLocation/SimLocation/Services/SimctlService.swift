@@ -64,7 +64,7 @@ actor SimctlService {
                 if let state = device["state"] as? String, state == "Booted",
                    let udid = device["udid"] as? String,
                    let name = device["name"] as? String {
-                    simulators.append(Simulator(id: udid, name: name, runtime: runtime))
+                    simulators.append(Simulator(id: udid, name: name, runtime: runtime, platform: .ios))
                 }
             }
         }

@@ -32,6 +32,7 @@
 		E6F708192A3B4C5D6E7F8019 /* GeofencePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071829A3B4C5D6E7F8019203 /* GeofencePanel.swift */; };
 		F708192A3B4C5D6E7F801920 /* CoordinateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08192A3B4C5D6E7F80192034 /* CoordinateFormat.swift */; };
 		A192034B4C5D6E7F80192035 /* DMSInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2920345C5D6E7F801920346 /* DMSInputView.swift */; };
+		C3920346D5E6F7A801920347 /* AdbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3920347E5F6A7B801920348 /* AdbService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		071829A3B4C5D6E7F8019203 /* GeofencePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofencePanel.swift; sourceTree = "<group>"; };
 		08192A3B4C5D6E7F80192034 /* CoordinateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateFormat.swift; sourceTree = "<group>"; };
 		B2920345C5D6E7F801920346 /* DMSInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSInputView.swift; sourceTree = "<group>"; };
+		D3920347E5F6A7B801920348 /* AdbService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdbService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -88,6 +90,7 @@
 		505E955778A7F345C7DA604F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				D3920347E5F6A7B801920348 /* AdbService.swift */,
 				E5F60718293A4B5C6D7E8F90 /* GPXParser.swift */,
 				D03134E0999F6D23CE9F6F2B /* PresetService.swift */,
 				DE858E9BCF83C837498B1A59 /* SimctlService.swift */,
@@ -225,6 +228,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3920346D5E6F7A801920347 /* AdbService.swift in Sources */,
 				BE181333C071B28331D42A46 /* AppViewModel.swift in Sources */,
 				F708192A3B4C5D6E7F801920 /* CoordinateFormat.swift in Sources */,
 				A192034B4C5D6E7F80192035 /* DMSInputView.swift in Sources */,

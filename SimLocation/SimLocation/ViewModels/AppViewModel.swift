@@ -95,13 +95,41 @@ final class AppViewModel {
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     )
 
+    // Android support
+    var adbAvailable: Bool = false
+    var adbGuidanceDismissed: Bool = UserDefaults.standard.bool(forKey: "adbGuidanceDismissed")
+    var showAdbGuidancePopover: Bool = false
+
     private let service = SimctlService()
+    private let adbService = AdbService()
+    private var activeAndroidRoutes: [String: Task<Void, any Error>] = [:]
     private var pollTimer: Timer?
     private let searchCompleter = MKLocalSearchCompleter()
     private var searchCompleterDelegate: SearchCompleterDelegate?
     private var routeDebounceTask: Task<Void, Never>?
     // Cache: key is "lat1,lng1->lat2,lng2", value is the resolved coordinates for that segment
     private var segmentCache: [String: [CLLocationCoordinate2D]] = [:]
+
+    /// Returns the platform for a given device ID, defaulting to .ios.
+    private func platform(for deviceID: String) -> DevicePlatform {
+        simulators.first(where: { $0.id == deviceID })?.platform ?? .ios
+    }
+
+    /// Whether any target device is Android.
+    var hasAndroidTarget: Bool {
+        targetUDIDs.contains { platform(for: $0) == .android }
+    }
+
+    /// Whether all target devices are Android.
+    var allTargetsAndroid: Bool {
+        !targetUDIDs.isEmpty && targetUDIDs.allSatisfy { platform(for: $0) == .android }
+    }
+
+    func dismissAdbGuidance() {
+        adbGuidanceDismissed = true
+        UserDefaults.standard.set(true, forKey: "adbGuidanceDismissed")
+        showAdbGuidancePopover = false
+    }
 
     var transportTypeForSpeed: MKDirectionsTransportType {
         switch selectedSpeedPreset {
@@ -152,22 +180,31 @@ final class AppViewModel {
     // MARK: - Simulator Management
 
     func refreshSimulators() async {
-        do {
-            let devices = try await service.listBootedDevices()
-            simulators = devices
-            if let selected = selectedSimulator,
-               !devices.contains(where: { $0.id == selected.id }) {
-                selectedSimulator = devices.first
-            }
-            if selectedSimulator == nil {
-                selectedSimulator = devices.first
-            }
-            // Remove broadcast selections for simulators that are no longer booted
-            let bootedIDs = Set(devices.map(\.id))
-            broadcastSimulators = broadcastSimulators.intersection(bootedIDs)
-        } catch {
-            // Silently ignore polling errors
+        var allDevices: [Simulator] = []
+
+        // Fetch iOS simulators
+        if let iosDevices = try? await service.listBootedDevices() {
+            allDevices.append(contentsOf: iosDevices)
         }
+
+        // Fetch Android emulators
+        let available = await adbService.isAvailable()
+        adbAvailable = available
+        if available, let androidDevices = try? await adbService.listRunningEmulators() {
+            allDevices.append(contentsOf: androidDevices)
+        }
+
+        simulators = allDevices
+        if let selected = selectedSimulator,
+           !allDevices.contains(where: { $0.id == selected.id }) {
+            selectedSimulator = allDevices.first
+        }
+        if selectedSimulator == nil {
+            selectedSimulator = allDevices.first
+        }
+        // Remove broadcast selections for devices that are no longer running
+        let bootedIDs = Set(allDevices.map(\.id))
+        broadcastSimulators = broadcastSimulators.intersection(bootedIDs)
     }
 
     func startPolling() {
@@ -347,7 +384,7 @@ final class AppViewModel {
 
     func setLocation() async {
         guard selectedSimulator != nil else {
-            statusMessage = "No simulator selected"
+            statusMessage = "No device selected"
             return
         }
         guard let lat = parseCoordinate(singleLatitude, isLatitude: true),
@@ -360,14 +397,18 @@ final class AppViewModel {
         var errors: [String] = []
         for udid in udids {
             do {
-                try await service.setLocation(udid: udid, latitude: lat, longitude: lng)
+                if platform(for: udid) == .android {
+                    try await adbService.setLocation(serial: udid, latitude: lat, longitude: lng)
+                } else {
+                    try await service.setLocation(udid: udid, latitude: lat, longitude: lng)
+                }
             } catch {
                 errors.append(error.localizedDescription)
             }
         }
         if errors.isEmpty {
             statusMessage = udids.count > 1
-                ? "Location set on \(udids.count) simulators"
+                ? "Location set on \(udids.count) devices"
                 : "Location set to \(lat), \(lng)"
         } else {
             statusMessage = "Error: \(errors.joined(separator: "; "))"
@@ -377,7 +418,7 @@ final class AppViewModel {
 
     func startRoute() async {
         guard selectedSimulator != nil else {
-            statusMessage = "No simulator selected"
+            statusMessage = "No device selected"
             return
         }
         guard waypoints.count >= 2 else {
@@ -403,22 +444,37 @@ final class AppViewModel {
         }
 
         let udids = targetUDIDs
+        let speed = resolvedSpeed
         var errors: [String] = []
         for udid in udids {
             do {
-                try await service.startRoute(
-                    udid: udid,
-                    waypoints: routeWaypoints,
-                    speed: resolvedSpeed,
-                    interval: interval
-                )
+                if platform(for: udid) == .android {
+                    // Cancel any existing route for this emulator
+                    activeAndroidRoutes[udid]?.cancel()
+                    // Start Android route simulation in background
+                    let task = Task.detached { [adbService] in
+                        try await adbService.simulateRoute(
+                            serial: udid,
+                            waypoints: routeWaypoints,
+                            speed: speed
+                        )
+                    }
+                    activeAndroidRoutes[udid] = task
+                } else {
+                    try await service.startRoute(
+                        udid: udid,
+                        waypoints: routeWaypoints,
+                        speed: resolvedSpeed,
+                        interval: interval
+                    )
+                }
             } catch {
                 errors.append(error.localizedDescription)
             }
         }
         if errors.isEmpty {
             statusMessage = udids.count > 1
-                ? "\(routeDescription) on \(udids.count) simulators"
+                ? "\(routeDescription) on \(udids.count) devices"
                 : "\(routeDescription) started"
         } else {
             statusMessage = "Error: \(errors.joined(separator: "; "))"
@@ -428,22 +484,30 @@ final class AppViewModel {
 
     func clearLocation() async {
         guard selectedSimulator != nil else {
-            statusMessage = "No simulator selected"
+            statusMessage = "No device selected"
             return
         }
         isLoading = true
         let udids = targetUDIDs
         var errors: [String] = []
         for udid in udids {
+            // Cancel any active Android route simulation
+            activeAndroidRoutes[udid]?.cancel()
+            activeAndroidRoutes.removeValue(forKey: udid)
+
             do {
-                try await service.clearLocation(udid: udid)
+                if platform(for: udid) == .android {
+                    try await adbService.clearLocation(serial: udid)
+                } else {
+                    try await service.clearLocation(udid: udid)
+                }
             } catch {
                 errors.append(error.localizedDescription)
             }
         }
         if errors.isEmpty {
             statusMessage = udids.count > 1
-                ? "Location cleared on \(udids.count) simulators"
+                ? "Location cleared on \(udids.count) devices"
                 : "Location cleared"
         } else {
             statusMessage = "Error: \(errors.joined(separator: "; "))"
@@ -453,23 +517,35 @@ final class AppViewModel {
 
     func runScenario() async {
         guard selectedSimulator != nil else {
-            statusMessage = "No simulator selected"
+            statusMessage = "No device selected"
             return
         }
+
+        let iosUDIDs = targetUDIDs.filter { platform(for: $0) == .ios }
+        if iosUDIDs.isEmpty {
+            statusMessage = "Scenarios are only available for iOS simulators"
+            return
+        }
+
         isLoading = true
-        let udids = targetUDIDs
         var errors: [String] = []
-        for udid in udids {
+        for udid in iosUDIDs {
             do {
                 try await service.runScenario(udid: udid, scenario: selectedScenario)
             } catch {
                 errors.append(error.localizedDescription)
             }
         }
+
+        let skippedAndroid = targetUDIDs.count - iosUDIDs.count
         if errors.isEmpty {
-            statusMessage = udids.count > 1
-                ? "Scenario \"\(selectedScenario)\" started on \(udids.count) simulators"
+            var msg = iosUDIDs.count > 1
+                ? "Scenario \"\(selectedScenario)\" started on \(iosUDIDs.count) simulators"
                 : "Scenario \"\(selectedScenario)\" started"
+            if skippedAndroid > 0 {
+                msg += " (skipped \(skippedAndroid) Android emulator\(skippedAndroid == 1 ? "" : "s"))"
+            }
+            statusMessage = msg
         } else {
             statusMessage = "Error: \(errors.joined(separator: "; "))"
         }
