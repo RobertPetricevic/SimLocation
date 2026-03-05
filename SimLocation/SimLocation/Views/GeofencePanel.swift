@@ -81,10 +81,17 @@ struct GeofencePanel: View {
             }
 
             HStack(spacing: 6) {
-                TextField("Radius (m)", text: $viewModel.pendingGeofenceRadius)
-                    .textFieldStyle(.roundedBorder)
-                    .font(.callout)
-                    .frame(width: 80)
+                VStack(alignment: .leading, spacing: 2) {
+                    TextField("Radius (m)", text: $viewModel.pendingGeofenceRadius)
+                        .textFieldStyle(.roundedBorder)
+                        .font(.callout)
+                        .frame(width: 80)
+                    if !viewModel.isGeofenceRadiusValid {
+                        Text("Must be > 0")
+                            .font(.caption2)
+                            .foregroundStyle(.red)
+                    }
+                }
 
                 Spacer()
 
@@ -100,7 +107,8 @@ struct GeofencePanel: View {
                 .buttonStyle(.plain)
                 .disabled(
                     viewModel.parseCoordinate(viewModel.pendingGeofenceLatitude, isLatitude: true) == nil ||
-                    viewModel.parseCoordinate(viewModel.pendingGeofenceLongitude, isLatitude: false) == nil
+                    viewModel.parseCoordinate(viewModel.pendingGeofenceLongitude, isLatitude: false) == nil ||
+                    !viewModel.isGeofenceRadiusValid
                 )
             }
         }

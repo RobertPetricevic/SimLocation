@@ -13,13 +13,27 @@ struct SingleLocationPanel: View {
             if viewModel.coordinateFormat == .dms {
                 VStack(spacing: 8) {
                     DMSInputView(coordinateString: $viewModel.singleLatitude, isLatitude: true, label: "Latitude")
+                    if let error = viewModel.singleLatitudeError {
+                        Text(error).font(.caption2).foregroundStyle(.red).padding(.leading)
+                    }
                     DMSInputView(coordinateString: $viewModel.singleLongitude, isLatitude: false, label: "Longitude")
+                    if let error = viewModel.singleLongitudeError {
+                        Text(error).font(.caption2).foregroundStyle(.red).padding(.leading)
+                    }
                 }
                 .padding(.horizontal)
             } else {
-                Form {
-                    TextField("Latitude", text: $viewModel.singleLatitude)
-                    TextField("Longitude", text: $viewModel.singleLongitude)
+                VStack(alignment: .leading, spacing: 4) {
+                    Form {
+                        TextField("Latitude", text: $viewModel.singleLatitude)
+                        TextField("Longitude", text: $viewModel.singleLongitude)
+                    }
+                    if let error = viewModel.singleLatitudeError {
+                        Text(error).font(.caption2).foregroundStyle(.red)
+                    }
+                    if let error = viewModel.singleLongitudeError {
+                        Text(error).font(.caption2).foregroundStyle(.red)
+                    }
                 }
                 .padding(.horizontal)
             }

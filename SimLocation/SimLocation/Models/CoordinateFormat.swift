@@ -41,13 +41,21 @@ enum CoordinateFormat: String, CaseIterable {
         let trimmed = string.trimmingCharacters(in: .whitespaces)
         if trimmed.isEmpty { return nil }
 
+        let value: Double?
+
         // Try decimal degrees first
-        if let value = Double(trimmed) {
-            return value
+        if let dd = Double(trimmed) {
+            value = dd
+        } else {
+            // Try DMS: e.g. "40° 42' 46.1\" N" or "40°42'46.1\"N"
+            value = parseDMS(trimmed, isLatitude: isLatitude)
         }
 
-        // Try DMS: e.g. "40° 42' 46.1\" N" or "40°42'46.1\"N"
-        return parseDMS(trimmed, isLatitude: isLatitude)
+        // Validate range
+        guard let result = value else { return nil }
+        let limit = isLatitude ? 90.0 : 180.0
+        guard abs(result) <= limit else { return nil }
+        return result
     }
 
     // MARK: - Private

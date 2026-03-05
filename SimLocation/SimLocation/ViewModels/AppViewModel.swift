@@ -147,6 +147,57 @@ final class AppViewModel {
         return selectedSpeedPreset.metersPerSecond ?? 13.0
     }
 
+    // MARK: - Input Validation
+
+    /// Validates the custom speed field. Must be a positive number.
+    var isCustomSpeedValid: Bool {
+        guard let value = Double(customSpeed) else { return false }
+        return value > 0 && value <= 1000
+    }
+
+    /// Validates the route interval field. Empty is valid (uses default), otherwise must be positive.
+    var isRouteIntervalValid: Bool {
+        let trimmed = routeInterval.trimmingCharacters(in: .whitespaces)
+        if trimmed.isEmpty { return true }
+        guard let value = Double(trimmed) else { return false }
+        return value > 0
+    }
+
+    /// Validates the geofence radius field. Must be a positive number.
+    var isGeofenceRadiusValid: Bool {
+        guard let value = Double(pendingGeofenceRadius) else { return false }
+        return value > 0
+    }
+
+    /// Validation error for single location latitude field.
+    var singleLatitudeError: String? {
+        let trimmed = singleLatitude.trimmingCharacters(in: .whitespaces)
+        if trimmed.isEmpty { return nil }
+        if parseCoordinate(singleLatitude, isLatitude: true) == nil {
+            if Double(trimmed) != nil || CoordinateFormat.parse(trimmed, isLatitude: true) == nil {
+                // If it parsed as a number but failed validation, it's out of range
+                if let raw = Double(trimmed), abs(raw) > 90 {
+                    return "Must be between -90 and 90"
+                }
+                return "Invalid format"
+            }
+        }
+        return nil
+    }
+
+    /// Validation error for single location longitude field.
+    var singleLongitudeError: String? {
+        let trimmed = singleLongitude.trimmingCharacters(in: .whitespaces)
+        if trimmed.isEmpty { return nil }
+        if parseCoordinate(singleLongitude, isLatitude: false) == nil {
+            if let raw = Double(trimmed), abs(raw) > 180 {
+                return "Must be between -180 and 180"
+            }
+            return "Invalid format"
+        }
+        return nil
+    }
+
     /// Parses a coordinate string using the current format, falling back to the other format.
     func parseCoordinate(_ string: String, isLatitude: Bool) -> Double? {
         CoordinateFormat.parse(string, isLatitude: isLatitude)

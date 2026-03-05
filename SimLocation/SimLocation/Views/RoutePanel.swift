@@ -94,6 +94,11 @@ struct RoutePanel: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
+                    if !viewModel.isCustomSpeedValid {
+                        Text("Enter a positive number (max 1000)")
+                            .font(.caption2)
+                            .foregroundStyle(.red)
+                    }
                 }
 
                 HStack {
@@ -104,6 +109,11 @@ struct RoutePanel: View {
                     Text("s")
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                }
+                if !viewModel.isRouteIntervalValid {
+                    Text("Must be a positive number")
+                        .font(.caption2)
+                        .foregroundStyle(.red)
                 }
             }
             .padding(.horizontal)
@@ -119,6 +129,8 @@ struct RoutePanel: View {
                     || viewModel.selectedSimulator == nil
                     || viewModel.isLoading
                     || viewModel.isCalculatingRoute
+                    || (viewModel.selectedSpeedPreset == .custom && !viewModel.isCustomSpeedValid)
+                    || !viewModel.isRouteIntervalValid
                 )
 
                 Button("Clear All") {
