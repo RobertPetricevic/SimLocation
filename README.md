@@ -11,7 +11,7 @@ Download the latest `.dmg` from [GitHub Releases](../../releases), open it, and 
 Requires Xcode 16+ and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/SimLocation.git
+git clone https://github.com/RobertPetricevic/SimLocation.git
 cd SimLocation/SimLocation
 xcodegen generate
 open SimLocation.xcodeproj
