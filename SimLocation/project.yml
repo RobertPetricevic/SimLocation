@@ -24,3 +24,18 @@ targets:
         ENABLE_APP_SANDBOX: "NO"
         GENERATE_INFOPLIST_FILE: "YES"
         INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.developer-tools"
+
+  SimLocationTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - SimLocationTests
+    dependencies:
+      - target: SimLocation
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        GENERATE_INFOPLIST_FILE: "YES"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/SimLocation.app/Contents/MacOS/SimLocation"
+        BUNDLE_LOADER: "$(TEST_HOST)"
