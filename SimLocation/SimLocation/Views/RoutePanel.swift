@@ -24,8 +24,7 @@ struct RoutePanel: View {
                         }
                     }
                     .onMove { source, destination in
-                        viewModel.waypoints.move(fromOffsets: source, toOffset: destination)
-                        viewModel.invalidateRoadRoute()
+                        viewModel.moveWaypoints(from: source, to: destination)
                     }
                 }
                 .frame(minHeight: 100, maxHeight: 250)

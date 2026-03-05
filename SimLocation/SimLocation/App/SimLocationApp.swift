@@ -10,5 +10,20 @@ struct SimLocationApp: App {
                 .frame(minWidth: 900, minHeight: 600)
         }
         .windowResizability(.contentMinSize)
+        .commands {
+            CommandGroup(replacing: .undoRedo) {
+                Button("Undo") {
+                    viewModel.undoManager.undo()
+                }
+                .keyboardShortcut("z", modifiers: .command)
+                .disabled(!viewModel.canUndo)
+
+                Button("Redo") {
+                    viewModel.undoManager.redo()
+                }
+                .keyboardShortcut("z", modifiers: [.command, .shift])
+                .disabled(!viewModel.canRedo)
+            }
+        }
     }
 }
