@@ -2,6 +2,28 @@
 
 A macOS app for iOS developers that lets you simulate GPS locations on iOS Simulators — without touching Xcode's clunky location simulation menu. Pick a simulator, set coordinates (or search for a place), and the location is injected instantly via `simctl`.
 
+## Installation
+
+### Download
+Download the latest `.dmg` from [GitHub Releases](../../releases), open it, and drag **SimLocation** to your Applications folder.
+
+### Build from Source
+Requires Xcode 16+ and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
+
+```bash
+git clone https://github.com/RobertPetricevic/SimLocation.git
+cd SimLocation/SimLocation
+xcodegen generate
+open SimLocation.xcodeproj
+```
+
+Build and run with `Cmd+R`.
+
+### Requirements
+- macOS 14.0 (Sonoma) or later
+- Xcode with iOS Simulator (for iOS location simulation)
+- Android SDK with `adb` (optional, for Android emulator support)
+
 ## Features
 
 | Feature | Description |
@@ -41,3 +63,11 @@ A macOS app for iOS developers that lets you simulate GPS locations on iOS Simul
 - **Preset management** — Add rename, drag-to-reorder, and folder/category support for presets
 - **Confirmation dialogs** — Add confirmation prompts when deleting presets or geofences
 - **Route speed profiles** — Vary speed along a route (e.g., slow at turns, fast on straightaways)
+
+## Privacy
+
+SimLocation does not collect, store, or transmit any personal data. All location data stays on your Mac. Network access is used solely for MapKit geocoding (place name search).
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.

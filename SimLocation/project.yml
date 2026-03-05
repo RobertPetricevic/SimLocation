@@ -19,11 +19,13 @@ targets:
         CURRENT_PROJECT_VERSION: "1"
         SWIFT_VERSION: "5.9"
         MACOSX_DEPLOYMENT_TARGET: "14.0"
-        CODE_SIGN_ENTITLEMENTS: ""
+        CODE_SIGN_ENTITLEMENTS: SimLocation/SimLocation.entitlements
         CODE_SIGN_IDENTITY: "-"
         ENABLE_APP_SANDBOX: "NO"
+        ENABLE_HARDENED_RUNTIME: "YES"
         GENERATE_INFOPLIST_FILE: "YES"
         INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.developer-tools"
+        INFOPLIST_KEY_NSHumanReadableCopyright: "© 2026 Robert Petricevic. All rights reserved."
 
   SimLocationTests:
     type: bundle.unit-test
