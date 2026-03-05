@@ -26,7 +26,7 @@ A macOS app for iOS developers that lets you simulate GPS locations on iOS Simul
 
 ### High Impact
 
-- **Input validation** — Add bounds checking for coordinates (lat -90–90, lon -180–180), custom speed, and route interval fields
+- ~~**Input validation** — Add bounds checking for coordinates (lat -90–90, lon -180–180), custom speed, and route interval fields~~ **Done**
 - **Unit tests** — Add test coverage for coordinate parsing, GPX import, and service layers
 - **Map annotation diffing** — Diff and update only changed annotations instead of removing and re-adding all on every update
 - **Undo/redo** — Support undo/redo for waypoint additions, deletions, and geofence changes
