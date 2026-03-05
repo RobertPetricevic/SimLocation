@@ -1,0 +1,447 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1066FBB7D0E284DD9EF6D58C /* SpeedPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA458BC14A5E4C5E6A3EACD /* SpeedPreset.swift */; };
+		150CED37936812B4785C0F90 /* ModePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E6EF24BC7CAE62941472B /* ModePanel.swift */; };
+		2E5DF9014403BB318895734F /* WaypointRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2AEAB2952820AFA21930B1 /* WaypointRow.swift */; };
+		4DE8C50066956C55E4D72115 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4FE256522B752A68354DC /* Preset.swift */; };
+		A1B2C3D4E5F60718293A4B5C /* RoutingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6071829A1B2C3D4E5F6 /* RoutingMode.swift */; };
+		58DF4D36EDA930045E6D3EC2 /* SimctlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE858E9BCF83C837498B1A59 /* SimctlService.swift */; };
+		63684009EDD5981790D58C8A /* MapContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBBCAC6AE5E30F95C4FEBE5 /* MapContainerView.swift */; };
+		709F01BC11CA8D3BFCA63729 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D33A1A3AE694719C8B2975F8 /* Assets.xcassets */; };
+		76F6FEA38FEB160BC13A61A4 /* SingleLocationPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590C078223759E52AEE85051 /* SingleLocationPanel.swift */; };
+		9C52723B61D313B208F58A31 /* LocationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1845A79E3AA81DA1C5DB7E3A /* LocationMode.swift */; };
+		B1EBC6363581D2E2190A2786 /* Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A3662D67D8FCD9E298E1D1 /* Simulator.swift */; };
+		B641E3AA522AF3C654846650 /* PresetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03134E0999F6D23CE9F6F2B /* PresetService.swift */; };
+		B7E143DC816C6BD2384DB764 /* RoutePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B23B56C2E9B601B8BECEEE /* RoutePanel.swift */; };
+		BE181333C071B28331D42A46 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78779CD9BAA1943553703969 /* AppViewModel.swift */; };
+		D3AFE552339BE8957DBF76BC /* SimLocationApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F4C01F5835010AD16DC01 /* SimLocationApp.swift */; };
+		D99FAFBC1B43EFBAED9B6DEE /* SimulatorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB19B143BB61433124746B5F /* SimulatorPicker.swift */; };
+		F67590AEB11115CE127CB76C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF23E5C4D72317411E251C6A /* ContentView.swift */; };
+		FCBC97C17768EB2DC552A1DC /* Waypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB1BCB5D74FA2F10E5F711 /* Waypoint.swift */; };
+		FE4DDA8F51494B2B940B0A84 /* ScenarioPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6B5E012B0B182676E9F9E5 /* ScenarioPanel.swift */; };
+		A2B3C4D5E6F70819203A4B5D /* LocationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4D5E6F70819A2B3C4D5E6 /* LocationConfig.swift */; };
+		C4D5E6F708192A3B4C5D6E7F /* GPXParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F60718293A4B5C6D7E8F90 /* GPXParser.swift */; };
+		D5E6F70819293A4B5C6D7E80 /* Geofence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6071829A3B4C5D6E7F80192 /* Geofence.swift */; };
+		E6F708192A3B4C5D6E7F8019 /* GeofencePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071829A3B4C5D6E7F8019203 /* GeofencePanel.swift */; };
+		F708192A3B4C5D6E7F801920 /* CoordinateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08192A3B4C5D6E7F80192034 /* CoordinateFormat.swift */; };
+		A192034B4C5D6E7F80192035 /* DMSInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2920345C5D6E7F801920346 /* DMSInputView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0CA458BC14A5E4C5E6A3EACD /* SpeedPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedPreset.swift; sourceTree = "<group>"; };
+		0EBBCAC6AE5E30F95C4FEBE5 /* MapContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapContainerView.swift; sourceTree = "<group>"; };
+		1845A79E3AA81DA1C5DB7E3A /* LocationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMode.swift; sourceTree = "<group>"; };
+		1F2AEAB2952820AFA21930B1 /* WaypointRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointRow.swift; sourceTree = "<group>"; };
+		267F4C01F5835010AD16DC01 /* SimLocationApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimLocationApp.swift; sourceTree = "<group>"; };
+		49B23B56C2E9B601B8BECEEE /* RoutePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutePanel.swift; sourceTree = "<group>"; };
+		4B9F3133D0C5D28CABE7858C /* SimLocation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimLocation.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		590C078223759E52AEE85051 /* SingleLocationPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLocationPanel.swift; sourceTree = "<group>"; };
+		5A6B5E012B0B182676E9F9E5 /* ScenarioPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioPanel.swift; sourceTree = "<group>"; };
+		5BD4FE256522B752A68354DC /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		70EB1BCB5D74FA2F10E5F711 /* Waypoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waypoint.swift; sourceTree = "<group>"; };
+		78779CD9BAA1943553703969 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		9F8E6EF24BC7CAE62941472B /* ModePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModePanel.swift; sourceTree = "<group>"; };
+		C8A3662D67D8FCD9E298E1D1 /* Simulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simulator.swift; sourceTree = "<group>"; };
+		D4E5F6071829A1B2C3D4E5F6 /* RoutingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingMode.swift; sourceTree = "<group>"; };
+		CB19B143BB61433124746B5F /* SimulatorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorPicker.swift; sourceTree = "<group>"; };
+		D03134E0999F6D23CE9F6F2B /* PresetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetService.swift; sourceTree = "<group>"; };
+		D33A1A3AE694719C8B2975F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DE858E9BCF83C837498B1A59 /* SimctlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimctlService.swift; sourceTree = "<group>"; };
+		EF23E5C4D72317411E251C6A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B3C4D5E6F70819A2B3C4D5E6 /* LocationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationConfig.swift; sourceTree = "<group>"; };
+		E5F60718293A4B5C6D7E8F90 /* GPXParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXParser.swift; sourceTree = "<group>"; };
+		F6071829A3B4C5D6E7F80192 /* Geofence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geofence.swift; sourceTree = "<group>"; };
+		071829A3B4C5D6E7F8019203 /* GeofencePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofencePanel.swift; sourceTree = "<group>"; };
+		08192A3B4C5D6E7F80192034 /* CoordinateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateFormat.swift; sourceTree = "<group>"; };
+		B2920345C5D6E7F801920346 /* DMSInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSInputView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		07D01FEA99CDE302996F0B8F /* SimLocation */ = {
+			isa = PBXGroup;
+			children = (
+				EA84609E9E0589D864C4C6FE /* App */,
+				872B7E9F6F6456B2605E1CF8 /* Models */,
+				8C03C0A43F16774BAB4B2DDC /* Resources */,
+				505E955778A7F345C7DA604F /* Services */,
+				C3F93833EFF5004BD37456B3 /* ViewModels */,
+				EC97ED553316E3392BFC0AC4 /* Views */,
+			);
+			path = SimLocation;
+			sourceTree = "<group>";
+		};
+		1618C98ADC4D51735949A4A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4B9F3133D0C5D28CABE7858C /* SimLocation.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		505E955778A7F345C7DA604F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E5F60718293A4B5C6D7E8F90 /* GPXParser.swift */,
+				D03134E0999F6D23CE9F6F2B /* PresetService.swift */,
+				DE858E9BCF83C837498B1A59 /* SimctlService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		872B7E9F6F6456B2605E1CF8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				08192A3B4C5D6E7F80192034 /* CoordinateFormat.swift */,
+				F6071829A3B4C5D6E7F80192 /* Geofence.swift */,
+				B3C4D5E6F70819A2B3C4D5E6 /* LocationConfig.swift */,
+				1845A79E3AA81DA1C5DB7E3A /* LocationMode.swift */,
+				5BD4FE256522B752A68354DC /* Preset.swift */,
+				D4E5F6071829A1B2C3D4E5F6 /* RoutingMode.swift */,
+				C8A3662D67D8FCD9E298E1D1 /* Simulator.swift */,
+				0CA458BC14A5E4C5E6A3EACD /* SpeedPreset.swift */,
+				70EB1BCB5D74FA2F10E5F711 /* Waypoint.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8C03C0A43F16774BAB4B2DDC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D33A1A3AE694719C8B2975F8 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B617DB5D57A71649AF96FDB2 = {
+			isa = PBXGroup;
+			children = (
+				07D01FEA99CDE302996F0B8F /* SimLocation */,
+				1618C98ADC4D51735949A4A0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C3F93833EFF5004BD37456B3 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				78779CD9BAA1943553703969 /* AppViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		EA84609E9E0589D864C4C6FE /* App */ = {
+			isa = PBXGroup;
+			children = (
+				267F4C01F5835010AD16DC01 /* SimLocationApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		EC97ED553316E3392BFC0AC4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EF23E5C4D72317411E251C6A /* ContentView.swift */,
+				B2920345C5D6E7F801920346 /* DMSInputView.swift */,
+				071829A3B4C5D6E7F8019203 /* GeofencePanel.swift */,
+				0EBBCAC6AE5E30F95C4FEBE5 /* MapContainerView.swift */,
+				9F8E6EF24BC7CAE62941472B /* ModePanel.swift */,
+				49B23B56C2E9B601B8BECEEE /* RoutePanel.swift */,
+				5A6B5E012B0B182676E9F9E5 /* ScenarioPanel.swift */,
+				CB19B143BB61433124746B5F /* SimulatorPicker.swift */,
+				590C078223759E52AEE85051 /* SingleLocationPanel.swift */,
+				1F2AEAB2952820AFA21930B1 /* WaypointRow.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		69B66526236DB20A15FFFED7 /* SimLocation */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C6154D5AE69A585FA45259F9 /* Build configuration list for PBXNativeTarget "SimLocation" */;
+			buildPhases = (
+				A26B5DB0B1A80B9E63F6DCA1 /* Sources */,
+				93AEC0D24EEA66BEDFF5350E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimLocation;
+			packageProductDependencies = (
+			);
+			productName = SimLocation;
+			productReference = 4B9F3133D0C5D28CABE7858C /* SimLocation.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1D16B2B45B9625DC361D9B13 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 907CF2FD5E93E3AACC983C62 /* Build configuration list for PBXProject "SimLocation" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = B617DB5D57A71649AF96FDB2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				69B66526236DB20A15FFFED7 /* SimLocation */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		93AEC0D24EEA66BEDFF5350E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				709F01BC11CA8D3BFCA63729 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A26B5DB0B1A80B9E63F6DCA1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE181333C071B28331D42A46 /* AppViewModel.swift in Sources */,
+				F708192A3B4C5D6E7F801920 /* CoordinateFormat.swift in Sources */,
+				A192034B4C5D6E7F80192035 /* DMSInputView.swift in Sources */,
+				F67590AEB11115CE127CB76C /* ContentView.swift in Sources */,
+				A2B3C4D5E6F70819203A4B5D /* LocationConfig.swift in Sources */,
+				9C52723B61D313B208F58A31 /* LocationMode.swift in Sources */,
+				63684009EDD5981790D58C8A /* MapContainerView.swift in Sources */,
+				150CED37936812B4785C0F90 /* ModePanel.swift in Sources */,
+				4DE8C50066956C55E4D72115 /* Preset.swift in Sources */,
+				B641E3AA522AF3C654846650 /* PresetService.swift in Sources */,
+				A1B2C3D4E5F60718293A4B5C /* RoutingMode.swift in Sources */,
+				B7E143DC816C6BD2384DB764 /* RoutePanel.swift in Sources */,
+				FE4DDA8F51494B2B940B0A84 /* ScenarioPanel.swift in Sources */,
+				D3AFE552339BE8957DBF76BC /* SimLocationApp.swift in Sources */,
+				D5E6F70819293A4B5C6D7E80 /* Geofence.swift in Sources */,
+				E6F708192A3B4C5D6E7F8019 /* GeofencePanel.swift in Sources */,
+				C4D5E6F708192A3B4C5D6E7F /* GPXParser.swift in Sources */,
+				58DF4D36EDA930045E6D3EC2 /* SimctlService.swift in Sources */,
+				B1EBC6363581D2E2190A2786 /* Simulator.swift in Sources */,
+				D99FAFBC1B43EFBAED9B6DEE /* SimulatorPicker.swift in Sources */,
+				76F6FEA38FEB160BC13A61A4 /* SingleLocationPanel.swift in Sources */,
+				1066FBB7D0E284DD9EF6D58C /* SpeedPreset.swift in Sources */,
+				FCBC97C17768EB2DC552A1DC /* Waypoint.swift in Sources */,
+				2E5DF9014403BB318895734F /* WaypointRow.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		355F4DD7B2F98D43E722ABCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SimLocation/SimLocation.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simlocation.app;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		3B35AFC6D7961720011525BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5C82A2D8FEC74681CA30C7DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		93CCAAC66A6AB7A6BE194B9F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SimLocation/SimLocation.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simlocation.app;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		907CF2FD5E93E3AACC983C62 /* Build configuration list for PBXProject "SimLocation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B35AFC6D7961720011525BD /* Debug */,
+				5C82A2D8FEC74681CA30C7DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C6154D5AE69A585FA45259F9 /* Build configuration list for PBXNativeTarget "SimLocation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				355F4DD7B2F98D43E722ABCE /* Debug */,
+				93CCAAC66A6AB7A6BE194B9F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1D16B2B45B9625DC361D9B13 /* Project object */;
+}
