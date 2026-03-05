@@ -8,6 +8,31 @@ final class AppViewModel {
     // Simulator state
     var simulators: [Simulator] = []
     var selectedSimulator: Simulator?
+    var broadcastSimulators: Set<String> = []  // UDIDs of additional simulators to broadcast to
+    var showBroadcastPopover: Bool = false
+
+    /// All target UDIDs: primary + broadcast (excluding primary duplicate).
+    var targetUDIDs: [String] {
+        guard let primary = selectedSimulator else { return [] }
+        var udids = [primary.id]
+        for udid in broadcastSimulators.sorted() where udid != primary.id {
+            udids.append(udid)
+        }
+        return udids
+    }
+
+    /// Simulators available for broadcast (all booted except the primary).
+    var broadcastableSimulators: [Simulator] {
+        simulators.filter { $0.id != selectedSimulator?.id }
+    }
+
+    func toggleBroadcast(for simulator: Simulator) {
+        if broadcastSimulators.contains(simulator.id) {
+            broadcastSimulators.remove(simulator.id)
+        } else {
+            broadcastSimulators.insert(simulator.id)
+        }
+    }
 
     // Mode
     var mode: LocationMode = .single
@@ -137,6 +162,9 @@ final class AppViewModel {
             if selectedSimulator == nil {
                 selectedSimulator = devices.first
             }
+            // Remove broadcast selections for simulators that are no longer booted
+            let bootedIDs = Set(devices.map(\.id))
+            broadcastSimulators = broadcastSimulators.intersection(bootedIDs)
         } catch {
             // Silently ignore polling errors
         }
@@ -318,7 +346,7 @@ final class AppViewModel {
     // MARK: - Commands
 
     func setLocation() async {
-        guard let sim = selectedSimulator else {
+        guard selectedSimulator != nil else {
             statusMessage = "No simulator selected"
             return
         }
@@ -328,17 +356,27 @@ final class AppViewModel {
             return
         }
         isLoading = true
-        do {
-            try await service.setLocation(udid: sim.id, latitude: lat, longitude: lng)
-            statusMessage = "Location set to \(lat), \(lng)"
-        } catch {
-            statusMessage = "Error: \(error.localizedDescription)"
+        let udids = targetUDIDs
+        var errors: [String] = []
+        for udid in udids {
+            do {
+                try await service.setLocation(udid: udid, latitude: lat, longitude: lng)
+            } catch {
+                errors.append(error.localizedDescription)
+            }
+        }
+        if errors.isEmpty {
+            statusMessage = udids.count > 1
+                ? "Location set on \(udids.count) simulators"
+                : "Location set to \(lat), \(lng)"
+        } else {
+            statusMessage = "Error: \(errors.joined(separator: "; "))"
         }
         isLoading = false
     }
 
     func startRoute() async {
-        guard let sim = selectedSimulator else {
+        guard selectedSimulator != nil else {
             statusMessage = "No simulator selected"
             return
         }
@@ -352,56 +390,88 @@ final class AppViewModel {
             await calculateRoadRoute()
         }
 
-        do {
-            let interval = Double(routeInterval)
-            let routeWaypoints: [Waypoint]
+        let interval = Double(routeInterval)
+        let routeWaypoints: [Waypoint]
+        let routeDescription: String
 
-            if routingMode == .followRoads, let resolved = resolvedRouteCoordinates {
-                routeWaypoints = resolved.map { Waypoint(latitude: $0.latitude, longitude: $0.longitude) }
-                statusMessage = "Road route started: \(routeWaypoints.count) points at \(resolvedSpeed) m/s"
-            } else {
-                routeWaypoints = waypoints
-                statusMessage = "Route started: \(routeWaypoints.count) waypoints at \(resolvedSpeed) m/s"
+        if routingMode == .followRoads, let resolved = resolvedRouteCoordinates {
+            routeWaypoints = resolved.map { Waypoint(latitude: $0.latitude, longitude: $0.longitude) }
+            routeDescription = "Road route: \(routeWaypoints.count) points at \(resolvedSpeed) m/s"
+        } else {
+            routeWaypoints = waypoints
+            routeDescription = "Route: \(routeWaypoints.count) waypoints at \(resolvedSpeed) m/s"
+        }
+
+        let udids = targetUDIDs
+        var errors: [String] = []
+        for udid in udids {
+            do {
+                try await service.startRoute(
+                    udid: udid,
+                    waypoints: routeWaypoints,
+                    speed: resolvedSpeed,
+                    interval: interval
+                )
+            } catch {
+                errors.append(error.localizedDescription)
             }
-
-            try await service.startRoute(
-                udid: sim.id,
-                waypoints: routeWaypoints,
-                speed: resolvedSpeed,
-                interval: interval
-            )
-        } catch {
-            statusMessage = "Error: \(error.localizedDescription)"
+        }
+        if errors.isEmpty {
+            statusMessage = udids.count > 1
+                ? "\(routeDescription) on \(udids.count) simulators"
+                : "\(routeDescription) started"
+        } else {
+            statusMessage = "Error: \(errors.joined(separator: "; "))"
         }
         isLoading = false
     }
 
     func clearLocation() async {
-        guard let sim = selectedSimulator else {
+        guard selectedSimulator != nil else {
             statusMessage = "No simulator selected"
             return
         }
         isLoading = true
-        do {
-            try await service.clearLocation(udid: sim.id)
-            statusMessage = "Location cleared"
-        } catch {
-            statusMessage = "Error: \(error.localizedDescription)"
+        let udids = targetUDIDs
+        var errors: [String] = []
+        for udid in udids {
+            do {
+                try await service.clearLocation(udid: udid)
+            } catch {
+                errors.append(error.localizedDescription)
+            }
+        }
+        if errors.isEmpty {
+            statusMessage = udids.count > 1
+                ? "Location cleared on \(udids.count) simulators"
+                : "Location cleared"
+        } else {
+            statusMessage = "Error: \(errors.joined(separator: "; "))"
         }
         isLoading = false
     }
 
     func runScenario() async {
-        guard let sim = selectedSimulator else {
+        guard selectedSimulator != nil else {
             statusMessage = "No simulator selected"
             return
         }
         isLoading = true
-        do {
-            try await service.runScenario(udid: sim.id, scenario: selectedScenario)
-            statusMessage = "Scenario \"\(selectedScenario)\" started"
-        } catch {
-            statusMessage = "Error: \(error.localizedDescription)"
+        let udids = targetUDIDs
+        var errors: [String] = []
+        for udid in udids {
+            do {
+                try await service.runScenario(udid: udid, scenario: selectedScenario)
+            } catch {
+                errors.append(error.localizedDescription)
+            }
+        }
+        if errors.isEmpty {
+            statusMessage = udids.count > 1
+                ? "Scenario \"\(selectedScenario)\" started on \(udids.count) simulators"
+                : "Scenario \"\(selectedScenario)\" started"
+        } else {
+            statusMessage = "Error: \(errors.joined(separator: "; "))"
         }
         isLoading = false
     }

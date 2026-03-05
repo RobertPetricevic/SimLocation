@@ -22,6 +22,6 @@
 
 11. ~~**Coordinate format options** — Toggle between decimal degrees and DMS (degrees/minutes/seconds).~~ **Done**
 
-12. **Multi-simulator broadcast** — Send the same location to all booted simulators at once.
+12. ~~**Multi-simulator broadcast** — Send the same location to all booted simulators at once.~~ **Done**
 
 13. **Android emulator support** — Simulate locations on Android emulators via `adb emu geo fix`. Detect running emulators with `adb devices` and let users pick between iOS/Android targets.
