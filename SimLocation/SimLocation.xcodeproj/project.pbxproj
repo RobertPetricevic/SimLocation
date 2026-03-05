@@ -10,12 +10,18 @@
 		1066FBB7D0E284DD9EF6D58C /* SpeedPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA458BC14A5E4C5E6A3EACD /* SpeedPreset.swift */; };
 		150CED37936812B4785C0F90 /* ModePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E6EF24BC7CAE62941472B /* ModePanel.swift */; };
 		2E5DF9014403BB318895734F /* WaypointRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2AEAB2952820AFA21930B1 /* WaypointRow.swift */; };
+		315B6C69B1E0AFA30D4AA402 /* GeofencePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F40FF3A2C9E9D86C9D85B5 /* GeofencePanel.swift */; };
+		43452AEE1230BE641B9484C5 /* CoordinateFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBCD7B171B48D54D597DE8C /* CoordinateFormatTests.swift */; };
+		43766241CB790302775E9CE9 /* RoutingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A448585580353CC346015AF /* RoutingMode.swift */; };
+		4528AE2F30F88D91B653DE6F /* PresetServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA76815F30464B3BA74FC6C4 /* PresetServiceTests.swift */; };
 		4DE8C50066956C55E4D72115 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4FE256522B752A68354DC /* Preset.swift */; };
-		A1B2C3D4E5F60718293A4B5C /* RoutingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6071829A1B2C3D4E5F6 /* RoutingMode.swift */; };
+		516F3ACD684E841152FEE28B /* GPXParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3F9538702E47FB0B37A48E /* GPXParser.swift */; };
 		58DF4D36EDA930045E6D3EC2 /* SimctlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE858E9BCF83C837498B1A59 /* SimctlService.swift */; };
 		63684009EDD5981790D58C8A /* MapContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBBCAC6AE5E30F95C4FEBE5 /* MapContainerView.swift */; };
+		7040AD286A2A86C8179BC291 /* GPXParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48758724B1DCADF89F721C99 /* GPXParserTests.swift */; };
 		709F01BC11CA8D3BFCA63729 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D33A1A3AE694719C8B2975F8 /* Assets.xcassets */; };
 		76F6FEA38FEB160BC13A61A4 /* SingleLocationPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590C078223759E52AEE85051 /* SingleLocationPanel.swift */; };
+		9AAF479C81B75BE94E1F2FA4 /* DMSInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F213A8EECFDA0A777662C161 /* DMSInputView.swift */; };
 		9C52723B61D313B208F58A31 /* LocationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1845A79E3AA81DA1C5DB7E3A /* LocationMode.swift */; };
 		B1EBC6363581D2E2190A2786 /* Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A3662D67D8FCD9E298E1D1 /* Simulator.swift */; };
 		B641E3AA522AF3C654846650 /* PresetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03134E0999F6D23CE9F6F2B /* PresetService.swift */; };
@@ -23,52 +29,65 @@
 		BE181333C071B28331D42A46 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78779CD9BAA1943553703969 /* AppViewModel.swift */; };
 		D3AFE552339BE8957DBF76BC /* SimLocationApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F4C01F5835010AD16DC01 /* SimLocationApp.swift */; };
 		D99FAFBC1B43EFBAED9B6DEE /* SimulatorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB19B143BB61433124746B5F /* SimulatorPicker.swift */; };
+		DC772E40669B85F662348A14 /* LocationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1F9BABF46E668FD4682554 /* LocationConfig.swift */; };
+		EADD8D36BF04A85635B3A85F /* AdbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091D3B66AB02745EFFE30FCA /* AdbService.swift */; };
 		F67590AEB11115CE127CB76C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF23E5C4D72317411E251C6A /* ContentView.swift */; };
+		FA6C6075EF6BD025DC305666 /* Geofence.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4B0652C4A6D43DC6AF9699 /* Geofence.swift */; };
 		FCBC97C17768EB2DC552A1DC /* Waypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB1BCB5D74FA2F10E5F711 /* Waypoint.swift */; };
 		FE4DDA8F51494B2B940B0A84 /* ScenarioPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6B5E012B0B182676E9F9E5 /* ScenarioPanel.swift */; };
-		A2B3C4D5E6F70819203A4B5D /* LocationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C4D5E6F70819A2B3C4D5E6 /* LocationConfig.swift */; };
-		C4D5E6F708192A3B4C5D6E7F /* GPXParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F60718293A4B5C6D7E8F90 /* GPXParser.swift */; };
-		D5E6F70819293A4B5C6D7E80 /* Geofence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6071829A3B4C5D6E7F80192 /* Geofence.swift */; };
-		E6F708192A3B4C5D6E7F8019 /* GeofencePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071829A3B4C5D6E7F8019203 /* GeofencePanel.swift */; };
-		F708192A3B4C5D6E7F801920 /* CoordinateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08192A3B4C5D6E7F80192034 /* CoordinateFormat.swift */; };
-		A192034B4C5D6E7F80192035 /* DMSInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2920345C5D6E7F801920346 /* DMSInputView.swift */; };
-		C3920346D5E6F7A801920347 /* AdbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3920347E5F6A7B801920348 /* AdbService.swift */; };
+		FFE5DD5E0D242A6ECD1933BC /* CoordinateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D204FA229D0B5210C68AD1 /* CoordinateFormat.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C9F122CA601E61B9499FA156 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1D16B2B45B9625DC361D9B13 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 69B66526236DB20A15FFFED7;
+			remoteInfo = SimLocation;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		091D3B66AB02745EFFE30FCA /* AdbService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdbService.swift; sourceTree = "<group>"; };
 		0CA458BC14A5E4C5E6A3EACD /* SpeedPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedPreset.swift; sourceTree = "<group>"; };
 		0EBBCAC6AE5E30F95C4FEBE5 /* MapContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapContainerView.swift; sourceTree = "<group>"; };
 		1845A79E3AA81DA1C5DB7E3A /* LocationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMode.swift; sourceTree = "<group>"; };
 		1F2AEAB2952820AFA21930B1 /* WaypointRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointRow.swift; sourceTree = "<group>"; };
+		1FBCD7B171B48D54D597DE8C /* CoordinateFormatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateFormatTests.swift; sourceTree = "<group>"; };
 		267F4C01F5835010AD16DC01 /* SimLocationApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimLocationApp.swift; sourceTree = "<group>"; };
+		2B1F9BABF46E668FD4682554 /* LocationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationConfig.swift; sourceTree = "<group>"; };
+		48758724B1DCADF89F721C99 /* GPXParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXParserTests.swift; sourceTree = "<group>"; };
 		49B23B56C2E9B601B8BECEEE /* RoutePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutePanel.swift; sourceTree = "<group>"; };
 		4B9F3133D0C5D28CABE7858C /* SimLocation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimLocation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		590C078223759E52AEE85051 /* SingleLocationPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLocationPanel.swift; sourceTree = "<group>"; };
 		5A6B5E012B0B182676E9F9E5 /* ScenarioPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScenarioPanel.swift; sourceTree = "<group>"; };
 		5BD4FE256522B752A68354DC /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		658BD7B0269B2480348DF6B7 /* SimLocationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimLocationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		70EB1BCB5D74FA2F10E5F711 /* Waypoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waypoint.swift; sourceTree = "<group>"; };
 		78779CD9BAA1943553703969 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		7A448585580353CC346015AF /* RoutingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingMode.swift; sourceTree = "<group>"; };
 		9F8E6EF24BC7CAE62941472B /* ModePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModePanel.swift; sourceTree = "<group>"; };
+		AA76815F30464B3BA74FC6C4 /* PresetServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetServiceTests.swift; sourceTree = "<group>"; };
+		BB3F9538702E47FB0B37A48E /* GPXParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXParser.swift; sourceTree = "<group>"; };
 		C8A3662D67D8FCD9E298E1D1 /* Simulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simulator.swift; sourceTree = "<group>"; };
-		D4E5F6071829A1B2C3D4E5F6 /* RoutingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingMode.swift; sourceTree = "<group>"; };
 		CB19B143BB61433124746B5F /* SimulatorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorPicker.swift; sourceTree = "<group>"; };
 		D03134E0999F6D23CE9F6F2B /* PresetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetService.swift; sourceTree = "<group>"; };
 		D33A1A3AE694719C8B2975F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE858E9BCF83C837498B1A59 /* SimctlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimctlService.swift; sourceTree = "<group>"; };
+		E558546C8896D75A5EF8067F /* SimLocation.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SimLocation.entitlements; sourceTree = "<group>"; };
+		E7F40FF3A2C9E9D86C9D85B5 /* GeofencePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofencePanel.swift; sourceTree = "<group>"; };
 		EF23E5C4D72317411E251C6A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		B3C4D5E6F70819A2B3C4D5E6 /* LocationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationConfig.swift; sourceTree = "<group>"; };
-		E5F60718293A4B5C6D7E8F90 /* GPXParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPXParser.swift; sourceTree = "<group>"; };
-		F6071829A3B4C5D6E7F80192 /* Geofence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geofence.swift; sourceTree = "<group>"; };
-		071829A3B4C5D6E7F8019203 /* GeofencePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofencePanel.swift; sourceTree = "<group>"; };
-		08192A3B4C5D6E7F80192034 /* CoordinateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateFormat.swift; sourceTree = "<group>"; };
-		B2920345C5D6E7F801920346 /* DMSInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSInputView.swift; sourceTree = "<group>"; };
-		D3920347E5F6A7B801920348 /* AdbService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdbService.swift; sourceTree = "<group>"; };
+		F213A8EECFDA0A777662C161 /* DMSInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSInputView.swift; sourceTree = "<group>"; };
+		F4D204FA229D0B5210C68AD1 /* CoordinateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateFormat.swift; sourceTree = "<group>"; };
+		FB4B0652C4A6D43DC6AF9699 /* Geofence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geofence.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		07D01FEA99CDE302996F0B8F /* SimLocation */ = {
 			isa = PBXGroup;
 			children = (
+				E558546C8896D75A5EF8067F /* SimLocation.entitlements */,
 				EA84609E9E0589D864C4C6FE /* App */,
 				872B7E9F6F6456B2605E1CF8 /* Models */,
 				8C03C0A43F16774BAB4B2DDC /* Resources */,
@@ -83,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				4B9F3133D0C5D28CABE7858C /* SimLocation.app */,
+				658BD7B0269B2480348DF6B7 /* SimLocationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -90,23 +110,33 @@
 		505E955778A7F345C7DA604F /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				D3920347E5F6A7B801920348 /* AdbService.swift */,
-				E5F60718293A4B5C6D7E8F90 /* GPXParser.swift */,
+				091D3B66AB02745EFFE30FCA /* AdbService.swift */,
+				BB3F9538702E47FB0B37A48E /* GPXParser.swift */,
 				D03134E0999F6D23CE9F6F2B /* PresetService.swift */,
 				DE858E9BCF83C837498B1A59 /* SimctlService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
+		837F16E77EDB1F515B7D49F6 /* SimLocationTests */ = {
+			isa = PBXGroup;
+			children = (
+				1FBCD7B171B48D54D597DE8C /* CoordinateFormatTests.swift */,
+				48758724B1DCADF89F721C99 /* GPXParserTests.swift */,
+				AA76815F30464B3BA74FC6C4 /* PresetServiceTests.swift */,
+			);
+			path = SimLocationTests;
+			sourceTree = "<group>";
+		};
 		872B7E9F6F6456B2605E1CF8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				08192A3B4C5D6E7F80192034 /* CoordinateFormat.swift */,
-				F6071829A3B4C5D6E7F80192 /* Geofence.swift */,
-				B3C4D5E6F70819A2B3C4D5E6 /* LocationConfig.swift */,
+				F4D204FA229D0B5210C68AD1 /* CoordinateFormat.swift */,
+				FB4B0652C4A6D43DC6AF9699 /* Geofence.swift */,
+				2B1F9BABF46E668FD4682554 /* LocationConfig.swift */,
 				1845A79E3AA81DA1C5DB7E3A /* LocationMode.swift */,
 				5BD4FE256522B752A68354DC /* Preset.swift */,
-				D4E5F6071829A1B2C3D4E5F6 /* RoutingMode.swift */,
+				7A448585580353CC346015AF /* RoutingMode.swift */,
 				C8A3662D67D8FCD9E298E1D1 /* Simulator.swift */,
 				0CA458BC14A5E4C5E6A3EACD /* SpeedPreset.swift */,
 				70EB1BCB5D74FA2F10E5F711 /* Waypoint.swift */,
@@ -126,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				07D01FEA99CDE302996F0B8F /* SimLocation */,
+				837F16E77EDB1F515B7D49F6 /* SimLocationTests */,
 				1618C98ADC4D51735949A4A0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -150,8 +181,8 @@
 			isa = PBXGroup;
 			children = (
 				EF23E5C4D72317411E251C6A /* ContentView.swift */,
-				B2920345C5D6E7F801920346 /* DMSInputView.swift */,
-				071829A3B4C5D6E7F8019203 /* GeofencePanel.swift */,
+				F213A8EECFDA0A777662C161 /* DMSInputView.swift */,
+				E7F40FF3A2C9E9D86C9D85B5 /* GeofencePanel.swift */,
 				0EBBCAC6AE5E30F95C4FEBE5 /* MapContainerView.swift */,
 				9F8E6EF24BC7CAE62941472B /* ModePanel.swift */,
 				49B23B56C2E9B601B8BECEEE /* RoutePanel.swift */,
@@ -184,6 +215,24 @@
 			productReference = 4B9F3133D0C5D28CABE7858C /* SimLocation.app */;
 			productType = "com.apple.product-type.application";
 		};
+		87F70BCBB32E16F7DA95EBCC /* SimLocationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDB6FAA239DA2C9AD2ABB45B /* Build configuration list for PBXNativeTarget "SimLocationTests" */;
+			buildPhases = (
+				1F0C1B7FCF7CF31D80DA2545 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0ECD1132DC158739AFBC5066 /* PBXTargetDependency */,
+			);
+			name = SimLocationTests;
+			packageProductDependencies = (
+			);
+			productName = SimLocationTests;
+			productReference = 658BD7B0269B2480348DF6B7 /* SimLocationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -208,6 +257,7 @@
 			projectRoot = "";
 			targets = (
 				69B66526236DB20A15FFFED7 /* SimLocation */,
+				87F70BCBB32E16F7DA95EBCC /* SimLocationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -224,28 +274,38 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1F0C1B7FCF7CF31D80DA2545 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43452AEE1230BE641B9484C5 /* CoordinateFormatTests.swift in Sources */,
+				7040AD286A2A86C8179BC291 /* GPXParserTests.swift in Sources */,
+				4528AE2F30F88D91B653DE6F /* PresetServiceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A26B5DB0B1A80B9E63F6DCA1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3920346D5E6F7A801920347 /* AdbService.swift in Sources */,
+				EADD8D36BF04A85635B3A85F /* AdbService.swift in Sources */,
 				BE181333C071B28331D42A46 /* AppViewModel.swift in Sources */,
-				F708192A3B4C5D6E7F801920 /* CoordinateFormat.swift in Sources */,
-				A192034B4C5D6E7F80192035 /* DMSInputView.swift in Sources */,
 				F67590AEB11115CE127CB76C /* ContentView.swift in Sources */,
-				A2B3C4D5E6F70819203A4B5D /* LocationConfig.swift in Sources */,
+				FFE5DD5E0D242A6ECD1933BC /* CoordinateFormat.swift in Sources */,
+				9AAF479C81B75BE94E1F2FA4 /* DMSInputView.swift in Sources */,
+				516F3ACD684E841152FEE28B /* GPXParser.swift in Sources */,
+				FA6C6075EF6BD025DC305666 /* Geofence.swift in Sources */,
+				315B6C69B1E0AFA30D4AA402 /* GeofencePanel.swift in Sources */,
+				DC772E40669B85F662348A14 /* LocationConfig.swift in Sources */,
 				9C52723B61D313B208F58A31 /* LocationMode.swift in Sources */,
 				63684009EDD5981790D58C8A /* MapContainerView.swift in Sources */,
 				150CED37936812B4785C0F90 /* ModePanel.swift in Sources */,
 				4DE8C50066956C55E4D72115 /* Preset.swift in Sources */,
 				B641E3AA522AF3C654846650 /* PresetService.swift in Sources */,
-				A1B2C3D4E5F60718293A4B5C /* RoutingMode.swift in Sources */,
 				B7E143DC816C6BD2384DB764 /* RoutePanel.swift in Sources */,
+				43766241CB790302775E9CE9 /* RoutingMode.swift in Sources */,
 				FE4DDA8F51494B2B940B0A84 /* ScenarioPanel.swift in Sources */,
 				D3AFE552339BE8957DBF76BC /* SimLocationApp.swift in Sources */,
-				D5E6F70819293A4B5C6D7E80 /* Geofence.swift in Sources */,
-				E6F708192A3B4C5D6E7F8019 /* GeofencePanel.swift in Sources */,
-				C4D5E6F708192A3B4C5D6E7F /* GPXParser.swift in Sources */,
 				58DF4D36EDA930045E6D3EC2 /* SimctlService.swift in Sources */,
 				B1EBC6363581D2E2190A2786 /* Simulator.swift in Sources */,
 				D99FAFBC1B43EFBAED9B6DEE /* SimulatorPicker.swift in Sources */,
@@ -258,12 +318,20 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		0ECD1132DC158739AFBC5066 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 69B66526236DB20A15FFFED7 /* SimLocation */;
+			targetProxy = C9F122CA601E61B9499FA156 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		355F4DD7B2F98D43E722ABCE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = SimLocation/SimLocation.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -405,7 +473,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = SimLocation/SimLocation.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -424,6 +492,44 @@
 			};
 			name = Release;
 		};
+		BC4CEAE378039E5C6C6A6A16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simlocation.SimLocationTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimLocation.app/Contents/MacOS/SimLocation";
+			};
+			name = Debug;
+		};
+		DDC05008A2EFA3BB56F399EC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simlocation.SimLocationTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimLocation.app/Contents/MacOS/SimLocation";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -432,6 +538,15 @@
 			buildConfigurations = (
 				3B35AFC6D7961720011525BD /* Debug */,
 				5C82A2D8FEC74681CA30C7DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BDB6FAA239DA2C9AD2ABB45B /* Build configuration list for PBXNativeTarget "SimLocationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC4CEAE378039E5C6C6A6A16 /* Debug */,
+				DDC05008A2EFA3BB56F399EC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
