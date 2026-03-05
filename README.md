@@ -19,6 +19,13 @@ open SimLocation.xcodeproj
 
 Build and run with `Cmd+R`.
 
+### First Launch
+Since the app is not notarized, macOS will block it on first open. To allow it:
+1. Click **Done** on the warning dialog
+2. Go to **System Settings → Privacy & Security**
+3. Scroll down and click **Open Anyway** next to the SimLocation message
+4. Enter your password — the app will now open normally going forward
+
 ### Requirements
 - macOS 14.0 (Sonoma) or later
 - Xcode with iOS Simulator (for iOS location simulation)
