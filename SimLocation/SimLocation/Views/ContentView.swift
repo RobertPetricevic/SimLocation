@@ -33,6 +33,24 @@ struct ContentView: View {
             ToolbarItem(placement: .principal) {
                 SimulatorPicker(viewModel: viewModel)
             }
+            ToolbarItem(placement: .navigation) {
+                Button {
+                    viewModel.undoManager.undo()
+                } label: {
+                    Label("Undo", systemImage: "arrow.uturn.backward")
+                }
+                .disabled(!viewModel.canUndo)
+                .help("Undo (⌘Z)")
+            }
+            ToolbarItem(placement: .navigation) {
+                Button {
+                    viewModel.undoManager.redo()
+                } label: {
+                    Label("Redo", systemImage: "arrow.uturn.forward")
+                }
+                .disabled(!viewModel.canRedo)
+                .help("Redo (⇧⌘Z)")
+            }
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     Task { await viewModel.clearLocation() }

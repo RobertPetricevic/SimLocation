@@ -10,6 +10,22 @@ class WaypointAnnotation: MKPointAnnotation {
     }
 }
 
+class SingleLocationAnnotation: MKPointAnnotation {}
+
+class GeofenceCircle: NSObject, MKOverlay {
+    let geofenceID: UUID
+    let circle: MKCircle
+
+    var coordinate: CLLocationCoordinate2D { circle.coordinate }
+    var boundingMapRect: MKMapRect { circle.boundingMapRect }
+
+    init(geofenceID: UUID, center: CLLocationCoordinate2D, radius: CLLocationDistance) {
+        self.geofenceID = geofenceID
+        self.circle = MKCircle(center: center, radius: radius)
+        super.init()
+    }
+}
+
 struct MapContainerView: NSViewRepresentable {
     var viewModel: AppViewModel
 
@@ -46,53 +62,180 @@ struct MapContainerView: NSViewRepresentable {
             mapView.setRegion(viewModel.mapRegion, animated: true)
         }
 
-        // Remove existing annotations and overlays
-        mapView.removeAnnotations(mapView.annotations)
-        mapView.removeOverlays(mapView.overlays)
+        // --- Annotation diffing ---
+        let existingSingles = mapView.annotations.compactMap { $0 as? SingleLocationAnnotation }
+        let existingWaypoints = mapView.annotations.compactMap { $0 as? WaypointAnnotation }
 
         switch viewModel.mode {
         case .single:
+            // Remove waypoint annotations (mode switch)
+            if !existingWaypoints.isEmpty {
+                mapView.removeAnnotations(existingWaypoints)
+            }
+
             if let lat = CoordinateFormat.parse(viewModel.singleLatitude, isLatitude: true),
                let lng = CoordinateFormat.parse(viewModel.singleLongitude, isLatitude: false) {
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-                annotation.title = "Location"
-                mapView.addAnnotation(annotation)
+                let desired = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+                if let existing = existingSingles.first {
+                    // Update in-place if coordinate changed
+                    if abs(existing.coordinate.latitude - desired.latitude) > 1e-10 ||
+                       abs(existing.coordinate.longitude - desired.longitude) > 1e-10 {
+                        existing.coordinate = desired
+                    }
+                    // Remove extras if somehow more than one
+                    if existingSingles.count > 1 {
+                        mapView.removeAnnotations(Array(existingSingles.dropFirst()))
+                    }
+                } else {
+                    let annotation = SingleLocationAnnotation()
+                    annotation.coordinate = desired
+                    annotation.title = "Location"
+                    mapView.addAnnotation(annotation)
+                }
+            } else {
+                // No valid coordinate — remove any existing single annotation
+                if !existingSingles.isEmpty {
+                    mapView.removeAnnotations(existingSingles)
+                }
             }
 
         case .route:
-            for (index, wp) in viewModel.waypoints.enumerated() {
-                let annotation = WaypointAnnotation(waypointID: wp.id)
-                annotation.coordinate = CLLocationCoordinate2D(
-                    latitude: wp.latitude,
-                    longitude: wp.longitude
-                )
-                annotation.title = "Waypoint \(index + 1)"
-                mapView.addAnnotation(annotation)
+            // Remove single-location annotations (mode switch)
+            if !existingSingles.isEmpty {
+                mapView.removeAnnotations(existingSingles)
             }
 
+            // Build lookup of existing waypoint annotations by ID
+            var existingByID: [UUID: WaypointAnnotation] = [:]
+            for wa in existingWaypoints {
+                existingByID[wa.waypointID] = wa
+            }
+
+            let desiredIDs = Set(viewModel.waypoints.map { $0.id })
+
+            // Remove stale waypoint annotations
+            let stale = existingWaypoints.filter { !desiredIDs.contains($0.waypointID) }
+            if !stale.isEmpty {
+                mapView.removeAnnotations(stale)
+            }
+
+            // Add or update waypoint annotations
+            for (index, wp) in viewModel.waypoints.enumerated() {
+                let expectedTitle = "Waypoint \(index + 1)"
+                if let existing = existingByID[wp.id] {
+                    if abs(existing.coordinate.latitude - wp.latitude) > 1e-10 ||
+                       abs(existing.coordinate.longitude - wp.longitude) > 1e-10 {
+                        existing.coordinate = CLLocationCoordinate2D(latitude: wp.latitude, longitude: wp.longitude)
+                    }
+                    if existing.title != expectedTitle {
+                        existing.title = expectedTitle
+                    }
+                } else {
+                    let annotation = WaypointAnnotation(waypointID: wp.id)
+                    annotation.coordinate = CLLocationCoordinate2D(latitude: wp.latitude, longitude: wp.longitude)
+                    annotation.title = expectedTitle
+                    mapView.addAnnotation(annotation)
+                }
+            }
+
+            // --- Polyline overlay diffing ---
+            let routeCoords: [CLLocationCoordinate2D]?
             if let resolved = viewModel.resolvedRouteCoordinates, resolved.count >= 2 {
-                var coords = resolved
-                let polyline = MKPolyline(coordinates: &coords, count: coords.count)
-                mapView.addOverlay(polyline)
+                routeCoords = resolved
             } else if viewModel.waypoints.count >= 2 {
-                var coords = viewModel.waypoints.map {
+                routeCoords = viewModel.waypoints.map {
                     CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
                 }
-                let polyline = MKPolyline(coordinates: &coords, count: coords.count)
-                mapView.addOverlay(polyline)
+            } else {
+                routeCoords = nil
+            }
+
+            var routeHash: Int?
+            if let coords = routeCoords {
+                var hasher = Hasher()
+                for c in coords {
+                    hasher.combine(c.latitude)
+                    hasher.combine(c.longitude)
+                }
+                routeHash = hasher.finalize()
+            }
+
+            if routeHash != context.coordinator.lastRouteCoordinateHash {
+                // Remove existing polylines
+                let existingPolylines = mapView.overlays.compactMap { $0 as? MKPolyline }
+                if !existingPolylines.isEmpty {
+                    mapView.removeOverlays(existingPolylines)
+                }
+                // Add new polyline if we have coords
+                if var coords = routeCoords {
+                    let polyline = MKPolyline(coordinates: &coords, count: coords.count)
+                    mapView.addOverlay(polyline)
+                }
+                context.coordinator.lastRouteCoordinateHash = routeHash
             }
 
         case .scenario:
-            break
+            // Remove all custom annotations when in scenario mode
+            if !existingSingles.isEmpty { mapView.removeAnnotations(existingSingles) }
+            if !existingWaypoints.isEmpty { mapView.removeAnnotations(existingWaypoints) }
+            // Remove polylines
+            let polylines = mapView.overlays.compactMap { $0 as? MKPolyline }
+            if !polylines.isEmpty { mapView.removeOverlays(polylines) }
+            context.coordinator.lastRouteCoordinateHash = nil
         }
 
-        // Geofence circle overlays (visible in all modes)
+        // Remove polylines when not in route mode
+        if viewModel.mode != .route {
+            let polylines = mapView.overlays.compactMap { $0 as? MKPolyline }
+            if !polylines.isEmpty { mapView.removeOverlays(polylines) }
+            context.coordinator.lastRouteCoordinateHash = nil
+        }
+
+        // --- Geofence overlay diffing ---
+        let existingCircles = mapView.overlays.compactMap { $0 as? GeofenceCircle }
+        var existingCirclesByID: [UUID: GeofenceCircle] = [:]
+        for circle in existingCircles {
+            existingCirclesByID[circle.geofenceID] = circle
+        }
+
+        let desiredGeofenceIDs = Set(viewModel.geofences.map { $0.id })
+
+        // Remove stale geofence circles
+        let staleCircles = existingCircles.filter { !desiredGeofenceIDs.contains($0.geofenceID) }
+        if !staleCircles.isEmpty {
+            mapView.removeOverlays(staleCircles)
+        }
+
+        // Add or recreate changed geofence circles
         for geofence in viewModel.geofences {
-            let center = CLLocationCoordinate2D(latitude: geofence.latitude, longitude: geofence.longitude)
-            let circle = MKCircle(center: center, radius: geofence.radius)
-            circle.title = viewModel.isInsideGeofence(geofence) ? "inside" : "outside"
-            mapView.addOverlay(circle)
+            let inside = viewModel.isInsideGeofence(geofence)
+            let newState = (lat: geofence.latitude, lng: geofence.longitude, radius: geofence.radius, inside: inside)
+
+            if let existing = existingCirclesByID[geofence.id],
+               let lastState = context.coordinator.lastGeofenceStates[geofence.id],
+               abs(lastState.lat - newState.lat) < 1e-10 &&
+               abs(lastState.lng - newState.lng) < 1e-10 &&
+               abs(lastState.radius - newState.radius) < 1e-10 &&
+               lastState.inside == newState.inside {
+                // No change — keep existing
+                _ = existing
+            } else {
+                // Remove old if present
+                if let existing = existingCirclesByID[geofence.id] {
+                    mapView.removeOverlay(existing)
+                }
+                let center = CLLocationCoordinate2D(latitude: geofence.latitude, longitude: geofence.longitude)
+                let circle = GeofenceCircle(geofenceID: geofence.id, center: center, radius: geofence.radius)
+                circle.circle.title = inside ? "inside" : "outside"
+                mapView.addOverlay(circle)
+            }
+            context.coordinator.lastGeofenceStates[geofence.id] = newState
+        }
+
+        // Clean up stale geofence state
+        let staleGeofenceIDs = Set(context.coordinator.lastGeofenceStates.keys).subtracting(desiredGeofenceIDs)
+        for id in staleGeofenceIDs {
+            context.coordinator.lastGeofenceStates.removeValue(forKey: id)
         }
     }
 
@@ -103,6 +246,8 @@ struct MapContainerView: NSViewRepresentable {
     class Coordinator: NSObject, MKMapViewDelegate, NSGestureRecognizerDelegate {
         var viewModel: AppViewModel
         var isDragging = false
+        var lastRouteCoordinateHash: Int?
+        var lastGeofenceStates: [UUID: (lat: Double, lng: Double, radius: Double, inside: Bool)] = [:]
 
         init(viewModel: AppViewModel) {
             self.viewModel = viewModel
@@ -143,9 +288,9 @@ struct MapContainerView: NSViewRepresentable {
                 renderer.lineWidth = 3
                 return renderer
             }
-            if let circle = overlay as? MKCircle {
-                let renderer = MKCircleRenderer(circle: circle)
-                let inside = circle.title == "inside"
+            if let geofenceCircle = overlay as? GeofenceCircle {
+                let renderer = MKCircleRenderer(circle: geofenceCircle.circle)
+                let inside = geofenceCircle.circle.title == "inside"
                 renderer.fillColor = (inside ? NSColor.systemGreen : NSColor.systemBlue).withAlphaComponent(0.15)
                 renderer.strokeColor = inside ? .systemGreen : .systemBlue
                 renderer.lineWidth = 2
@@ -167,6 +312,9 @@ struct MapContainerView: NSViewRepresentable {
                 if let title = annotation.title ?? nil {
                     view.glyphText = title.replacingOccurrences(of: "Waypoint ", with: "")
                 }
+            } else if annotation is SingleLocationAnnotation {
+                view.markerTintColor = .systemRed
+                view.isDraggable = false
             } else {
                 view.markerTintColor = .systemRed
                 view.isDraggable = false

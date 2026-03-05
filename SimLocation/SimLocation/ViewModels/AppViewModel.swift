@@ -5,6 +5,30 @@ import UniformTypeIdentifiers
 
 @MainActor @Observable
 final class AppViewModel {
+    // Undo/Redo
+    let undoManager = UndoManager()
+    var canUndo: Bool = false
+    var canRedo: Bool = false
+    private var undoObservers: [Any] = []
+
+    private func setupUndoObservers() {
+        let nc = NotificationCenter.default
+        let names: [Notification.Name] = [
+            .NSUndoManagerDidUndoChange,
+            .NSUndoManagerDidRedoChange,
+            .NSUndoManagerDidCloseUndoGroup,
+        ]
+        for name in names {
+            let observer = nc.addObserver(forName: name, object: undoManager, queue: .main) { [weak self] _ in
+                MainActor.assumeIsolated {
+                    self?.canUndo = self?.undoManager.canUndo ?? false
+                    self?.canRedo = self?.undoManager.canRedo ?? false
+                }
+            }
+            undoObservers.append(observer)
+        }
+    }
+
     // Simulator state
     var simulators: [Simulator] = []
     var selectedSimulator: Simulator?
@@ -75,6 +99,11 @@ final class AppViewModel {
     var pendingGeofenceLongitude: String = ""
     var editingGeofenceID: UUID?
 
+    // Waypoint editing
+    var editingWaypointID: UUID?
+    var pendingWaypointLatitude: String = ""
+    var pendingWaypointLongitude: String = ""
+
     // Coordinate format
     var coordinateFormat: CoordinateFormat = CoordinateFormat(
         rawValue: UserDefaults.standard.string(forKey: "coordinateFormat") ?? "dd"
@@ -109,6 +138,10 @@ final class AppViewModel {
     private var routeDebounceTask: Task<Void, Never>?
     // Cache: key is "lat1,lng1->lat2,lng2", value is the resolved coordinates for that segment
     private var segmentCache: [String: [CLLocationCoordinate2D]] = [:]
+
+    init() {
+        setupUndoObservers()
+    }
 
     /// Returns the platform for a given device ID, defaulting to .ios.
     private func platform(for deviceID: String) -> DevicePlatform {
@@ -226,6 +259,14 @@ final class AppViewModel {
         if let lon = CoordinateFormat.parse(pendingGeofenceLongitude, isLatitude: false) {
             pendingGeofenceLongitude = CoordinateFormat.formatSingle(lon, isLatitude: false, as: newFormat)
         }
+
+        // Convert waypoint pending fields
+        if let lat = CoordinateFormat.parse(pendingWaypointLatitude, isLatitude: true) {
+            pendingWaypointLatitude = CoordinateFormat.formatSingle(lat, isLatitude: true, as: newFormat)
+        }
+        if let lon = CoordinateFormat.parse(pendingWaypointLongitude, isLatitude: false) {
+            pendingWaypointLongitude = CoordinateFormat.formatSingle(lon, isLatitude: false, as: newFormat)
+        }
     }
 
     // MARK: - Simulator Management
@@ -282,13 +323,24 @@ final class AppViewModel {
             return
         }
 
+        if editingWaypointID != nil {
+            pendingWaypointLatitude = formatForInput(coordinate.latitude, isLatitude: true)
+            pendingWaypointLongitude = formatForInput(coordinate.longitude, isLatitude: false)
+            return
+        }
+
         switch mode {
         case .single:
             singleLatitude = formatForInput(coordinate.latitude, isLatitude: true)
             singleLongitude = formatForInput(coordinate.longitude, isLatitude: false)
         case .route:
-            waypoints.append(Waypoint(latitude: coordinate.latitude, longitude: coordinate.longitude))
+            let newWaypoint = Waypoint(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            waypoints.append(newWaypoint)
             invalidateRoadRoute()
+            undoManager.registerUndo(withTarget: self) { vm in
+                vm.waypoints.removeAll { $0.id == newWaypoint.id }
+                vm.invalidateRoadRoute()
+            }
         case .scenario:
             break
         }
@@ -296,21 +348,78 @@ final class AppViewModel {
 
     func updateWaypointCoordinate(id: UUID, latitude: Double, longitude: Double) {
         guard let index = waypoints.firstIndex(where: { $0.id == id }) else { return }
+        let oldLat = waypoints[index].latitude
+        let oldLng = waypoints[index].longitude
         waypoints[index].latitude = latitude
         waypoints[index].longitude = longitude
         invalidateRoadRoute()
+        undoManager.registerUndo(withTarget: self) { vm in
+            vm.updateWaypointCoordinate(id: id, latitude: oldLat, longitude: oldLng)
+        }
+    }
+
+    func startEditingWaypoint(_ waypoint: Waypoint) {
+        editingWaypointID = waypoint.id
+        pendingWaypointLatitude = formatForInput(waypoint.latitude, isLatitude: true)
+        pendingWaypointLongitude = formatForInput(waypoint.longitude, isLatitude: false)
+    }
+
+    func saveEditingWaypoint() {
+        guard let id = editingWaypointID,
+              let lat = parseCoordinate(pendingWaypointLatitude, isLatitude: true),
+              let lng = parseCoordinate(pendingWaypointLongitude, isLatitude: false) else {
+            return
+        }
+        updateWaypointCoordinate(id: id, latitude: lat, longitude: lng)
+        editingWaypointID = nil
+        pendingWaypointLatitude = ""
+        pendingWaypointLongitude = ""
+    }
+
+    func cancelEditingWaypoint() {
+        editingWaypointID = nil
+        pendingWaypointLatitude = ""
+        pendingWaypointLongitude = ""
     }
 
     func removeWaypoint(_ waypoint: Waypoint) {
-        waypoints.removeAll { $0.id == waypoint.id }
+        if editingWaypointID == waypoint.id {
+            editingWaypointID = nil
+        }
+        guard let index = waypoints.firstIndex(where: { $0.id == waypoint.id }) else { return }
+        let removed = waypoints.remove(at: index)
         invalidateRoadRoute()
+        undoManager.registerUndo(withTarget: self) { vm in
+            vm.waypoints.insert(removed, at: min(index, vm.waypoints.count))
+            vm.invalidateRoadRoute()
+        }
+    }
+
+    func moveWaypoints(from source: IndexSet, to destination: Int) {
+        let oldWaypoints = waypoints
+        waypoints.move(fromOffsets: source, toOffset: destination)
+        invalidateRoadRoute()
+        undoManager.registerUndo(withTarget: self) { vm in
+            vm.waypoints = oldWaypoints
+            vm.invalidateRoadRoute()
+        }
     }
 
     func clearWaypoints() {
+        let oldWaypoints = waypoints
+        let oldResolved = resolvedRouteCoordinates
+        let oldWarning = routeWarning
+        let oldCache = segmentCache
         waypoints.removeAll()
         resolvedRouteCoordinates = nil
         routeWarning = nil
         segmentCache.removeAll()
+        undoManager.registerUndo(withTarget: self) { vm in
+            vm.waypoints = oldWaypoints
+            vm.resolvedRouteCoordinates = oldResolved
+            vm.routeWarning = oldWarning
+            vm.segmentCache = oldCache
+        }
     }
 
     // MARK: - Road Routing
@@ -717,6 +826,10 @@ final class AppViewModel {
         pendingGeofenceLongitude = ""
         pendingGeofenceRadius = "100"
         statusMessage = "Geofence added"
+        undoManager.registerUndo(withTarget: self) { vm in
+            vm.geofences.removeAll { $0.id == geofence.id }
+            vm.saveGeofences()
+        }
     }
 
     func startEditingGeofence(_ geofence: Geofence) {
@@ -737,6 +850,7 @@ final class AppViewModel {
         }
         let radius = Double(pendingGeofenceRadius) ?? 100
         let name = pendingGeofenceName.trimmingCharacters(in: .whitespaces)
+        let oldGeofence = geofences[index]
         geofences[index].name = name.isEmpty ? "Geofence" : name
         geofences[index].latitude = lat
         geofences[index].longitude = lng
@@ -746,6 +860,11 @@ final class AppViewModel {
         pendingGeofenceLatitude = ""
         pendingGeofenceLongitude = ""
         statusMessage = "Geofence updated"
+        undoManager.registerUndo(withTarget: self) { vm in
+            guard let idx = vm.geofences.firstIndex(where: { $0.id == oldGeofence.id }) else { return }
+            vm.geofences[idx] = oldGeofence
+            vm.saveGeofences()
+        }
     }
 
     func cancelEditingGeofence() {
@@ -756,8 +875,13 @@ final class AppViewModel {
         if editingGeofenceID == geofence.id {
             editingGeofenceID = nil
         }
-        geofences.removeAll { $0.id == geofence.id }
+        guard let index = geofences.firstIndex(where: { $0.id == geofence.id }) else { return }
+        let removed = geofences.remove(at: index)
         saveGeofences()
+        undoManager.registerUndo(withTarget: self) { vm in
+            vm.geofences.insert(removed, at: min(index, vm.geofences.count))
+            vm.saveGeofences()
+        }
     }
 
     func isInsideGeofence(_ geofence: Geofence) -> Bool {
